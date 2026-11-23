@@ -1,0 +1,21 @@
+# Files that must NOT be published (relative to site/; no '/' = basename anywhere; '*' crosses '/').
+# Read by scripts/verify_build.py and scripts/check_excludes.py.
+# statify.py builds site/ from scratch (it copies only the two background images), so this is
+# a safety net: personal data of the 1998 registrations and server-side code must never get in.
+
+# OS junk and backups
+.DS_Store
+Thumbs.db
+*.bak
+# server-side code
+*.asp
+*.inc
+# registrations (names, addresses, e-mails) and their copies, votes with codes, raw flat files
+inscriptions/
+inscriptions.zip
+votes/
+compos/
+# design sources of the registration form, backups of the ASP pages
+# (folders '#save', '#html_bak', '#images' cannot be listed here: '#' starts a comment)
+*.psd
+*.tga
