@@ -32,6 +32,33 @@ import sys
 from pathlib import Path
 
 ENC = "iso-8859-1"
+
+# ---- removal-request footer: added to every page that lists or describes people
+REMOVAL_MARK = 'id="removal-note"'
+REMOVAL_NOTE = (
+    '<div id="removal-note" style="clear:both;margin:28px auto 8px;padding:6px 8px 0;width:60%;'
+    'border-top:1px solid #808080;text-align:center;font:10px/14px Verdana,Arial,Helvetica,sans-serif;'
+    'color:#808080;background:transparent">To be removed from this page, '
+    '<a href="mailto:chandra_oj@pm.me" style="color:#808080;text-decoration:underline">contact me</a>.</div>'
+)
+_BODY_END = re.compile(r"(?is)</body\s*>(?!.*</body\s*>)")
+
+
+def add_removal_note(text):
+    if REMOVAL_MARK in text:
+        return text
+    m = _BODY_END.search(text)
+    if m:
+        return text[: m.start()] + REMOVAL_NOTE + "\n" + text[m.start():]
+    return text + "\n" + REMOVAL_NOTE + "\n"
+
+# Pages that list or describe people (attendee list).
+PEOPLE_PAGES = {"inscription_liste.html"}
+
+
+def is_people_page(rel):
+    return rel in PEOPLE_PAGES
+
 SRC_ENC = "cp1252"          # the 1998 flat files (Windows)
 REPO = Path(__file__).resolve().parent.parent
 RAW_DEFAULT = Path(os.environ.get("LTP2_RAW") or (REPO / "private" / "party-raw"))
@@ -224,6 +251,8 @@ def main(argv=None):
         "votes_resultats.html": build_results(compos),
     }
     for name, html in pages.items():
+        if is_people_page(name):
+            html = add_removal_note(html)
         write(out, "f/" + name, html)
         write(out, name, shell(html, name))
     for img in IMAGES:
