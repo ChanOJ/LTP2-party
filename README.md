@@ -10,6 +10,12 @@ Kept online for history, no longer developed. Visitors can never write anything:
 the static pages committed in `site/`, the CDN only serves files, and every method except
 GET/HEAD/OPTIONS is refused at the edge. Other LTP archives: `LTP4`, `LTP4-postparty`.
 
+## Search engines
+
+`scripts/seo.py` writes `robots.txt` (allow everything, with the `Sitemap:` line) and `sitemap.xml` (indexable pages only) into `site/`; `statify.py` runs it at the end of the build (alone: `python3 -I scripts/seo.py`).
+
+`scripts/frame-restore.js` (one `<script>` tag in every page, added by `seo.py`) sends `/f/<name>.html` opened on its own (a search result) to `/<name>.html`, the page that shows it in the 1021x650 iframe. The page stays a plain file, so crawlers still read it.
+
 ## Layout
 
 | Path | Content |
