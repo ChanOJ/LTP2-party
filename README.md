@@ -50,7 +50,7 @@ flat files: `inscriptions/` (one file per registration), `compos/` (entries per 
   found, with a note saying they are not the party's results.
 - **Framed**: every public page (`index.html`, `inscription.html`, ...) is a small shell with an
   iframe of 1021x650, the size of the background image, loading the content page `f/<same name>`;
-  links inside the frames reopen the outer pages. The frame scrolls when a page is longer.
+  links inside the frames stay inside the frame. The frame scrolls when a page is longer.
 - **Added**: `index.html` (the original has no entry page; marked "page added in 2026"), a
   navigation line on the rebuilt pages, `compos.html`. `face="Verdana"` gets sans-serif fallbacks.
 - **Not published, never**: the registration files (`inscriptions/`, `#save/`:

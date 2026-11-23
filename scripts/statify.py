@@ -13,7 +13,7 @@ lists, votes). Nothing of it can run any more, so every page is rebuilt once:
   (added)                 -> index.html, compos.html   entry page, compo lists
 
 Every public page is a shell with an iframe of 1021x650 (the size of back_p.jpg) that loads the
-content page `f/<name>`; the links of the framed pages reopen the outer pages (target _top).
+content page `f/<name>`; the links of the framed pages stay inside the frame (they point to their siblings in `f/`).
 
 Personal data is never read into the output: of each registration file only the first two
 lines (handle, group) are used. Names, birth dates, addresses, e-mails, prices, sex and the
@@ -143,11 +143,6 @@ def shell(inner_html, name):
             'topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">\n%s\n</BODY>\n</HTML>\n' % (META, title, body))
 
 
-def inner(text):
-    """Links of a framed page: to the outer pages, replacing the whole window."""
-    return re.sub(r'<A HREF="([a-z_]+\.html)"', r'<A HREF="../\1" TARGET="_top"', text)
-
-
 def build_list(att):
     rows = "".join('  <TR>\n    <TD NOWRAP>%s</TD>\n    <TD NOWRAP>%s</TD>\n  </TR>\n' % (esc(h), esc(g)) for h, g in att)
     body = ('%s\n<TABLE width="500">\n  <TR>\n    <TD width="50%%" NOWRAP><FONT color="#0000FF">PSEUDO</FONT></TD>\n'
@@ -229,7 +224,6 @@ def main(argv=None):
         "votes_resultats.html": build_results(compos),
     }
     for name, html in pages.items():
-        html = inner(html)
         write(out, "f/" + name, html)
         write(out, name, shell(html, name))
     for img in IMAGES:
