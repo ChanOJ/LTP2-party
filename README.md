@@ -39,7 +39,8 @@ flat files: `inscriptions/` (one file per registration), `compos/` (entries per 
 `scripts/statify.py`; `build-meta/redirects.tsv` lists the old → new names.
 
 - **Registration form** (`inscription.html`) → an "archived, read-only" notice over the original
-  background image (`back_p.jpg`). The form fields and their ASP code are gone.
+  background image (`back_p.jpg`), shown once in a 1021x650 iframe (`inscription_frame.html`), the
+  size of the image. The form fields and their ASP code are gone.
 - **List of attendees** (`inscription_liste.html`): the original table of code, handle, group,
   sex and price is reduced to **handle and group only** (217 registrations, sorted by handle as
   the ASP did, plus the count). Nothing else of a registration is published.

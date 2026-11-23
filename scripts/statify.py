@@ -6,7 +6,8 @@
 The original is a handful of classic-ASP pages over flat files (registrations, compo
 lists, votes). Nothing of it can run any more, so every page is rebuilt once:
 
-  inscription.asp         -> inscription.html          registration form -> "archived" notice
+  inscription.asp         -> inscription.html          registration form -> "archived" notice, in a 1021x650
+                                                       frame (inscription_frame.html) the size of the background
   inscription_liste.asp   -> inscription_liste.html    list of attendees: HANDLE and GROUP only
   votes.asp               -> votes.html                vote form -> "archived" notice
   votes_resultats.asp     -> votes_resultats.html      compo entries and their scores
@@ -116,13 +117,23 @@ def build_index(n_att, compos):
 
 
 def build_inscription():
+    """Outer page: the 1021x650 frame (size of back_p.jpg) centred on black."""
+    body = ('<CENTER>\n<IFRAME src="inscription_frame.html" width="1021" height="650" frameborder="0" scrolling="no" '
+            'title="LTP 2 - registration (closed)"></IFRAME>\n</CENTER>')
+    return page("LTP 2 - INSCRIPTIONS", body, 'text="#FFFFFF" bgcolor="#000000" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0"')
+
+
+def build_inscription_frame():
+    """Content of the frame: the background image shown once, at its own size, with the notice over it."""
     body = ('<BR><BR><BR><BR><BR><BR><BR>\n<TABLE border="0" cellspacing="0" cellpadding="12" bgcolor="#000000">\n<TR><TD>\n'
             '<FONT size="3" color="#FFFFFF">LTP 2 &#8211; REGISTRATION</FONT><BR><BR>\n'
             'Registrations for the party were taken here in 1998 (handle, group, machine, entrance fee). '
             'The form is closed.<BR>\n%s\n'
-            '<A HREF="inscription_liste.html">LIST OF ATTENDEES</A> | <A HREF="index.html">HOME</A>\n'
+            '<A HREF="inscription_liste.html" TARGET="_top">LIST OF ATTENDEES</A> | <A HREF="index.html" TARGET="_top">HOME</A>\n'
             '</TD></TR>\n</TABLE>' % notice("the registration form"))
-    return page("LTP 2 - INSCRIPTIONS", body, 'background="back_p.jpg" text="#FFFFFF" bgcolor="#000000" link="#FFFFFF" vlink="#C0C0C0"')
+    return page("LTP 2 - INSCRIPTIONS", body,
+                'background="back_p.jpg" text="#FFFFFF" bgcolor="#000000" link="#FFFFFF" vlink="#C0C0C0" '
+                'style="margin:0;background-repeat:no-repeat" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0"')
 
 
 def build_list(att):
@@ -198,6 +209,7 @@ def main(argv=None):
     compos, empty = load_compos(raw)
     write(out, "index.html", build_index(len(att), compos))
     write(out, "inscription.html", build_inscription())
+    write(out, "inscription_frame.html", build_inscription_frame())
     write(out, "inscription_liste.html", build_list(att))
     write(out, "votes.html", build_votes())
     write(out, "compos.html", build_compos(compos, empty))
@@ -209,7 +221,7 @@ def main(argv=None):
     meta.mkdir(parents=True, exist_ok=True)
     (meta / "redirects.tsv").write_text("\n".join("/%s.asp\t/%s.html" % (n, n) for n in
                                                   ("inscription", "inscription_liste", "votes", "votes_resultats")) + "\n")
-    print("%d attendees (handle + group only); %d compos, %d with entries; 6 pages, %d images"
+    print("%d attendees (handle + group only); %d compos, %d with entries; 7 pages, %d images"
           % (len(att), len(compos), sum(1 for c in compos if c[2]), len(IMAGES)))
     return 0
 
