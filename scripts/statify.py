@@ -28,6 +28,7 @@ import argparse
 import re
 import os
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -264,6 +265,8 @@ def main(argv=None):
                                                   ("inscription", "inscription_liste", "votes", "votes_resultats")) + "\n")
     print("%d attendees (handle + group only); %d compos, %d with entries; 7 pages, %d images"
           % (len(att), len(compos), sum(1 for c in compos if c[2]), len(IMAGES)))
+    # Crawlers and frames: sitemap.xml, robots.txt and the frame-restore script tag (scripts/seo.py).
+    subprocess.run([sys.executable, "-I", str(REPO / "scripts" / "seo.py"), "--site", str(out)], check=True)
     return 0
 
 
