@@ -101,7 +101,7 @@ locals {
   # swf: the old Flash intro (none on this site), never run in the page.
   archive_extensions = ["zip", "swf"]
 
-    html_extensions   = ["htm", "html", "shtml", "SHTML"]
+  html_extensions   = ["htm", "html", "shtml", "SHTML"]
   text_extensions   = ["txt", "c"]
   static_extensions = ["jpg", "jpeg", "gif", "png", "ico", "zip", "swf"]
 }
