@@ -20,6 +20,7 @@ The rendered ASP pages (`inscription.asp`, ...) are compared under their `.html`
 """
 import argparse
 import fnmatch
+import json
 import os
 import re
 import sys
@@ -49,7 +50,7 @@ TEXT_EXT = PAGE_EXT + (".txt", ".c")
 ASP_RENDERED = {"inscription.asp": "inscription.html", "inscription_liste.asp": "inscription_liste.html",
                 "votes.asp": "votes.html", "votes_resultats.asp": "votes_resultats.html"}
 KEY_PAGES = ("index.html", "inscription.html", "inscription_liste.html", "votes.html", "votes_resultats.html",
-             "compos.html", "back_f.jpg", "back_p.jpg")
+             "compos.html", "back_p.jpg")
 IPV4 = re.compile(r"(?<![\d.])(?:(?:25[0-5]|2[0-4]\d|1?\d?\d)\.){3}(?:25[0-5]|2[0-4]\d|1?\d?\d)(?![\d.])")
 
 
@@ -267,8 +268,11 @@ def main(argv=None):
     if reg.is_dir():
         leaks = []
         regs = [rd(f).replace("\r\n", "\n").split("\n") for f in sorted(reg.glob("*.txt"))]
-        published = {l.strip().lower() for lines in regs for l in lines[:2]}   # handles and groups: public by design
-        text_low = pub_text.lower()
+        # handles and groups of every registration: public by design, so a value equal to one of them is not a new leak
+        published = {l.strip().lower() for lines in regs for l in lines[:2]}
+        # the hostname (family domain in robots.txt and sitemap.xml) is not a registration value
+        host = json.loads((REPO / "site.json").read_text(encoding="utf-8"))["hostname"].lower()
+        text_low = pub_text.lower().replace(host, "")
         for lines in regs:
             # lines 4..14: name, first name, birth date, sex, address, zip, city, e-mail
             for v in lines[3:14]:

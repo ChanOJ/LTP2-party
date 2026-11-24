@@ -33,7 +33,8 @@ DOCTYPE = re.compile(rb"<!doctype[^>]*>\s*", re.I)
 TAG = b'<script src="/frame-restore.js"></script>'
 NOT_FOUND_NAMES = {"404.htm", "404.html"}
 # Alternative skins (/skin/<name>/...) duplicate the pages of the default one: not listed in the sitemap.
-SKIP_PREFIXES = ("skin/",)
+# Frame pages f/<name>.html are loaded inside the wrappers: only the wrappers are listed.
+SKIP_PREFIXES = ("skin/", "f/")
 
 
 def html_files(site):
