@@ -59,12 +59,16 @@ flat files: `inscriptions/` (one file per registration), `compos/` (entries per 
   links inside the frames stay inside the frame. The frame scrolls when a page is longer.
 - **Added**: `index.html` (the original has no entry page; marked "page added in 2026"), a
   navigation line on the rebuilt pages, `compos.html`. `face="Verdana"` gets sans-serif fallbacks.
+- **Removed** (2026-11-24): `back_f.jpg`, the background of the original registration form, unused
+  (it shows the form labels, nothing else). The sitemap lists the wrappers only, not the `f/` frame pages.
 - **Not published, never**: the registration files (`inscriptions/`, `#save/`:
   names, birth dates, addresses, e-mails), `inscriptions.zip` (the same data), the registration
   codes (they were the voting passwords), the raw `votes/` and `compos/` files, every `.asp`
   source, `#html_bak/` (older ASP copies) and `#images/` (Photoshop sources of the form, 38 MB).
   The build is checked against the raw registrations: `scripts/verify_build.py` fails if any
   name, address or e-mail value appears in `site/`, or any 8-digit hex code.
+  Since 2026-11-24 a value equal to a published handle or group is not flagged (public by design: several
+  first names are also handles), and the hostname is ignored (it holds the family name).
 - **Not found elsewhere**: the Wayback Machine (CDX API, 2026-11-23) has no capture of
   `ltp.ojuice.net`, `www.ojuice.net/ltp*` or `ojuice.net/ltp*` in 1998-1999 (the first capture of
   `ltp.ojuice.net` is 2000-08, the LTP4 site), so no other page of LTP2 could be restored. The
@@ -103,7 +107,7 @@ python3 scripts/preview.py 3571
 
 ## Removal requests
 
-Pages that list or describe people end with a small footer, "To be removed from this page, contact me." (a `mailto:` link). `scripts/statify.py` adds it (`is_people_page`), so it survives rebuilds; `scripts/verify_build.py` leaves it out of its `mailto:` and e-mail checks.
+Pages that show a family name, a full postal address or an e-mail local part in clear would end with a small footer, "To be removed from this page, contact me." (a `mailto:` link), limited to the site width. None today: the attendee list shows handle and group only, so it carries none (removed 2026-11-24). `scripts/statify.py` adds it (`is_people_page`), so it survives rebuilds; `scripts/verify_build.py` leaves it out of its `mailto:` and e-mail checks.
 
 ## Deploying
 

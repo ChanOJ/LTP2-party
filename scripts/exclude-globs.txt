@@ -19,3 +19,4 @@ compos/
 # (folders '#save', '#html_bak', '#images' cannot be listed here: '#' starts a comment)
 *.psd
 *.tga
+back_f.jpg
